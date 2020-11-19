@@ -37,13 +37,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "3!2l9r2mvmw1ism)@ud5*p9s^l2k%*+w-1h4om^-2pa+!epva"
+SECRET_KEY = os.environ.get("SECRET_KEY", "changeme")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get("DEBUG", 0)))
 
 ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(","))
 
 # Application definition
 
@@ -147,24 +149,30 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATICFILES_FINDERS = (
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-)
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/2.2/howto/static-files/
+# STATICFILES_FINDERS = (
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+# )
 
-STATIC_URL = "/static/"
+# STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, 'images', 'static'),
-    # 'webui/static',
-    # BASE_DIR / "static",
-    # '/var/www/static/',
-    os.path.join(BASE_DIR, "images", "static"),
-]
+# STATICFILES_DIRS = [
+#     # os.path.join(BASE_DIR, 'images', 'static'),
+#     # 'webui/static',
+#     # BASE_DIR / "static",
+#     # '/var/www/static/',
+#     os.path.join(BASE_DIR, "images", "static"),
+# ]
 
-# 루트 static 디렉터
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATIC_ROOT = join(PROJECT_ROOT, 'static/')
+# # 루트 static 디렉터
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# # STATIC_ROOT = join(PROJECT_ROOT, 'static/')
 # STATIC_ROOT = "/var/www/example.com/static/"
+
+STATIC_URL = "/static/static/"
+MEDIA_URL = "/static/media/"
+
+STATIC_ROOT = "/vol/web/static"
+MEDIA_ROOT = "/vol/web/media"
